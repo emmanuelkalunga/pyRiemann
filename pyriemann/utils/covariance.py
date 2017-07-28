@@ -1,5 +1,6 @@
 import numpy
 from sklearn.covariance import oas, ledoit_wolf, fast_mcd, empirical_covariance
+from covar import cov_shrink_ss
 from matplotlib import mlab
 
 # Mapping different estimator on the sklearn toolbox
@@ -27,6 +28,11 @@ def _mcd(X):
     _, C, _, _ = fast_mcd(X.T)
     return C
 
+def _shaf(X):
+    """Wrapper for covar Schafer shrinkage estimator"""
+    C_X = X.T.copy(order='C')
+    C, _ = cov_shrink_ss(C_X)
+    return C
 
 def _check_est(est):
     """Check if a given estimator is valid"""
@@ -38,7 +44,8 @@ def _check_est(est):
         'lwf': _lwf,
         'oas': _oas,
         'mcd': _mcd,
-        'corr': numpy.corrcoef
+        'corr': numpy.corrcoef,
+        'shaf': _shaf
     }
 
     if callable(est):

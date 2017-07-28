@@ -4,3 +4,4 @@ scikit-learn>=0.18
 pandas
 joblib
 seaborn
+covar
